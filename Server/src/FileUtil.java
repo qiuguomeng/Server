@@ -35,6 +35,24 @@ public class FileUtil {
         return false;
     }
 
+    public static boolean push(String fileName, InputStream inputStream, long fileLong) {
+        try {
+            RandomAccessFile randomAccessFile = new RandomAccessFile(fileName,"rw");
+            int len = 0;
+            byte[] bytes = new byte[2048];
+            while (-1 != (len = inputStream.read(bytes))) {
+                randomAccessFile.write(bytes,0,len);
+            }
+            randomAccessFile.close();
+            return true;
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return false;
+    }
+
     public static boolean pull(String srcFile, OutputStream outputStream) {
         File file = new File(srcFile);
         if (!file.exists()) {
@@ -52,6 +70,25 @@ public class FileUtil {
             if (-1 == len) {
                 return true;
             }
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return false;
+    }
+
+    public static boolean pull(String fileName, long fileLong, OutputStream outputStream) {
+        try {
+            RandomAccessFile randomAccessFile = new RandomAccessFile(fileName, "r");
+            int len = 0;
+            byte[] bytes = new byte[2048];
+            if (-1 != (len = randomAccessFile.read(bytes))) {
+                outputStream.write(bytes,0,len);
+            }
+            outputStream.close();
+            randomAccessFile.close();
+            return true;
         } catch (FileNotFoundException e) {
             e.printStackTrace();
         } catch (IOException e) {
@@ -104,23 +141,5 @@ public class FileUtil {
             }
         }
         return directory.delete();
-    }
-
-    public static boolean push(String fileName, InputStream inputStream, long fileLong) {
-        try {
-            RandomAccessFile randomAccessFile = new RandomAccessFile(fileName,"rw");
-            int len = 0;
-            byte[] bytes = new byte[2048];
-            while (-1 != (len = inputStream.read(bytes))) {
-                randomAccessFile.write(bytes,0,len);
-            }
-            randomAccessFile.close();
-            return true;
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        return false;
     }
 }

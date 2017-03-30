@@ -17,10 +17,10 @@ public class FileTransfer {
 
     private FileTransfer(){}
 
-    public void execute(String fileName, byte pushOrPull,long filePushLength,FileTransfer.Feedback feedback) {
+    public void execute(String fileName, byte pushOrPull,long fileTranferLength,FileTransfer.Feedback feedback) {
         try {
             Socket socket = serverSocket.accept();
-            new FileTransferThread(socket,fileName,pushOrPull,filePushLength,feedback).start();
+            new FileTransferThread(socket,fileName,pushOrPull,fileTranferLength,feedback).start();
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -70,7 +70,11 @@ public class FileTransfer {
                     feedback.feedback(FileUtil.push(fileName, socket.getInputStream()));
                     socket.close();
                 } else if (pushOrPull == PULL) {
-                    feedback.feedback(FileUtil.pull(fileName, socket.getOutputStream()));
+                    if (fileLong == 0) {
+                        feedback.feedback(FileUtil.pull(fileName, socket.getOutputStream()));
+                    } else if (fileLong != 0) {
+                        feedback.feedback(FileUtil.pull(fileName,fileLong, socket.getOutputStream()));
+                    }
                     socket.close();
                 } else {
                         socket.close();

@@ -103,8 +103,10 @@ public class Main {
                         FileTransfer.getInstance().execute(desFileName,PUSH,fileLength,this);
                     }
                 } else if (command.contains("pull")) {
-                    String desFileName = command.substring(command.indexOf("pull:")+5).trim();
-                    FileTransfer.getInstance().execute(desFileName, PULL,0, this);//开启子线程传输文件
+                    String[] command01 = command.split(",");
+                    String desFileName = command01[0].substring(command01[0].indexOf("pull:")+5).trim();
+                    long startTranferLength = Long.parseLong(command01[1]);
+                    FileTransfer.getInstance().execute(desFileName, PULL,startTranferLength, this);//开启子线程传输文件
                 } else if (command.contains("read")) {//返回读取的目录的文件列表，为String类型，用“，”分割
                     String desFileName = command.substring(command.indexOf("read:")+5).trim();
                     String[] fileList1 = FileUtil.read(desFileName);
