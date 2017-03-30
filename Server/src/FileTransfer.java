@@ -74,6 +74,7 @@ public class FileTransfer {
                         feedback.feedback(FileUtil.pull(fileName, socket.getOutputStream()));
                     } else if (fileLong != 0) {
                         feedback.feedback(FileUtil.pull(fileName,fileLong, socket.getOutputStream()));
+//                        System.out.println("FileTransfer:FileUtil.pull Run"+fileLong);
                     }
                     socket.close();
                 } else {

@@ -81,9 +81,10 @@ public class FileUtil {
     public static boolean pull(String fileName, long fileLong, OutputStream outputStream) {
         try {
             RandomAccessFile randomAccessFile = new RandomAccessFile(fileName, "r");
+            randomAccessFile.seek(fileLong);
             int len = 0;
             byte[] bytes = new byte[2048];
-            if (-1 != (len = randomAccessFile.read(bytes))) {
+            while(-1 != (len = randomAccessFile.read(bytes))) {
                 outputStream.write(bytes,0,len);
             }
             outputStream.close();
